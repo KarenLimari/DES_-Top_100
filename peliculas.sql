@@ -10,7 +10,7 @@ CREATE TABLE
 peliculas= CREATE TABLE reparto(id SERIAL PRIMARY KEY, id_pelicula INT NOT NULL, nombre_actor VARCHAR(100) NOT NULL, FOREIGN KEY (id_pelicula) REFERENCES peliculas(id));
 CREATE TABLE
 
--- 2. Cargar ambos archivos a su tabla correspondiente.
+--2. Cargar ambos archivos a su tabla correspondiente.
 
 peliculas=# \copy peliculas(id, pelicula, "Año estreno", director) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M5\DES_ Top_100\peliculas.csv'DELIMITER ',' CSV HEADER;
 COPY 100
@@ -18,6 +18,7 @@ peliculas=# \copy reparto(id_pelicula, nombre_actor) FROM 'C:\Users\karen\bootca
 5\DES_ Top_100\reparto.csv'DELIMITER ',' CSV HEADER;
 COPY 1051
 peliculas=# SELECT * FROM peliculas;
+
  id  |                       pelicula                        | Año estreno |       director
    1 | Forest Gump                                           |        1994 | Robert Zemeckis
    2 | Titanic                                               |        1997 | James Cameron
