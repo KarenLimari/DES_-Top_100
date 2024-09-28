@@ -1,4 +1,4 @@
-'1. Crear una base de datos que se llame peliculas'
+--1. Crear una base de datos que se llame peliculas
 postgres=#
 CREATE DATABASE peliculas;
 CREATE DATABASE
@@ -10,7 +10,7 @@ CREATE TABLE
 peliculas= CREATE TABLE reparto(id SERIAL PRIMARY KEY, id_pelicula INT NOT NULL, nombre_actor VARCHAR(100) NOT NULL, FOREIGN KEY (id_pelicula) REFERENCES peliculas(id));
 CREATE TABLE
 
-'2. Cargar ambos archivos a su tabla correspondiente.'
+-- 2. Cargar ambos archivos a su tabla correspondiente.
 
 peliculas=# \copy peliculas(id, pelicula, "Año estreno", director) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M5\DES_ Top_100\peliculas.csv'DELIMITER ',' CSV HEADER;
 COPY 100
@@ -132,7 +132,7 @@ peliculas=# SELECT * FROM reparto;
 -- Más  --
 (1051 filas)
 
-'3. Obtener el ID de la película “Titanic”.'
+-- 3. Obtener el ID de la película “Titanic”.
 
 peliculas=# SELECT id FROM peliculas WHERE pelicula = 'Titanic';
 
@@ -141,7 +141,7 @@ id
   2
 (1 fila)
 
-'4. Listar todos los actores que apareceb en la pelicula "Titanic".'
+-- 4. Listar todos los actores que apareceb en la pelicula "Titanic".
 
 peliculas=# SELECT nombre_actor FROM reparto WHERE id_pelicula = 2;
    nombre_actor
@@ -161,7 +161,7 @@ peliculas=# SELECT nombre_actor FROM reparto WHERE id_pelicula = 2;
  Suzy Amis
 (13 filas)
 
-'5. Consultar en cuántas películas del top 100 participa Harrison Ford.'
+-- 5. Consultar en cuántas películas del top 100 participa Harrison Ford.
 
 peliculas=# SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_HarrisonFord FROM reparto WHERE nombre_actor = 'Harrison Ford';
  participacion_peliculas_harrisonford
@@ -169,7 +169,7 @@ peliculas=# SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_Harris
                                     8
 (1 fila)
 
-'6. Indicar las películas estrenadas entre los años 1990 y 1999 ordenadas por título de manera ascendente.'
+-- 6. Indicar las películas estrenadas entre los años 1990 y 1999 ordenadas por título de manera ascendente.
 
 peliculas=# SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" BETWEEN 1990 AND 1999 ORDER BY pelicula ASC;
 
@@ -207,7 +207,7 @@ peliculas=# SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" 
  Uno de los nuestros                        |        1990
 (30 filas)
 
-'7. Hacer una consulta SQL que muestre los títulos con su longitud, la longitud debe ser nombrado para la consulta como “longitud_titulo”.'
+-- 7. Hacer una consulta SQL que muestre los títulos con su longitud, la longitud debe ser nombrado para la consulta como “longitud_titulo”.
 
 peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
 
@@ -315,7 +315,7 @@ peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
  Psicosis                                              |               8
 (100 filas)
 
-'8. Consultar cual es la longitud más grande entre todos los títulos de las películas.'
+-- 8. Consultar cual es la longitud más grande entre todos los títulos de las películas.
 
 peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas WHERE LENGTH(pelicula) = (SELECT MAX(LENGTH(pelicula)) FROM peliculas) LIMIT 1;
 
