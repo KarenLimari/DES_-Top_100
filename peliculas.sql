@@ -2,22 +2,29 @@
 postgres=#
 CREATE DATABASE peliculas;
 CREATE DATABASE
-postgres=# \c peliculas;
+postgres=#
+\c peliculas;
 Ahora está conectado a la base de datos «peliculas» con el usuario «postgres».
+
 peliculas=#
-peliculas=# CREATE TABLE peliculas(id INT PRIMARY KEY, pelicula VARCHAR(100) NOT NULL, "Año estreno" INT NOT NULL, director VARCHAR(100) NOT NULL);
+CREATE TABLE peliculas(id INT PRIMARY KEY, pelicula VARCHAR(100) NOT NULL, "Año estreno" INT NOT NULL, director VARCHAR(100) NOT NULL);
 CREATE TABLE
-peliculas= CREATE TABLE reparto(id SERIAL PRIMARY KEY, id_pelicula INT NOT NULL, nombre_actor VARCHAR(100) NOT NULL, FOREIGN KEY (id_pelicula) REFERENCES peliculas(id));
+peliculas=#
+CREATE TABLE reparto(id SERIAL PRIMARY KEY, id_pelicula INT NOT NULL, nombre_actor VARCHAR(100) NOT NULL, FOREIGN KEY (id_pelicula) REFERENCES peliculas(id));
 CREATE TABLE
 
 --2. Cargar ambos archivos a su tabla correspondiente.
 
-peliculas=# \copy peliculas(id, pelicula, "Año estreno", director) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M5\DES_ Top_100\peliculas.csv'DELIMITER ',' CSV HEADER;
+peliculas=#
+\copy peliculas(id, pelicula, "Año estreno", director) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M5\DES_ Top_100\peliculas.csv'DELIMITER ',' CSV HEADER;
 COPY 100
-peliculas=# \copy reparto(id_pelicula, nombre_actor) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M
+peliculas=#
+\copy reparto(id_pelicula, nombre_actor) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M
 5\DES_ Top_100\reparto.csv'DELIMITER ',' CSV HEADER;
 COPY 1051
-peliculas=# SELECT * FROM peliculas;
+
+peliculas=#
+SELECT * FROM peliculas;
 
  id  |                       pelicula                        | Año estreno |       director
    1 | Forest Gump                                           |        1994 | Robert Zemeckis
@@ -122,7 +129,9 @@ peliculas=# SELECT * FROM peliculas;
  100 | Psicosis                                              |        1960 | Alfred Hitchcock
 (100 filas)
 
-peliculas=# SELECT * FROM reparto;
+peliculas=#
+SELECT * FROM reparto;
+
   id  | id_pelicula |        nombre_actor
 ------+-------------+-----------------------------
     1 |           1 | Tom Hanks
@@ -135,7 +144,8 @@ peliculas=# SELECT * FROM reparto;
 
 -- 3. Obtener el ID de la película “Titanic”.
 
-peliculas=# SELECT id FROM peliculas WHERE pelicula = 'Titanic';
+peliculas=#
+SELECT id FROM peliculas WHERE pelicula = 'Titanic';
 
 id
 ----
@@ -144,27 +154,29 @@ id
 
 -- 4. Listar todos los actores que apareceb en la pelicula "Titanic".
 
-peliculas=# SELECT nombre_actor FROM reparto WHERE id_pelicula = 2;
-   nombre_actor
+peliculas=#
+SELECT nombre_actor FROM reparto WHERE id_pelicula = 2;
+  nombre_actor
 -------------------
- Leonardo DiCaprio
- Kate Winslet
- Billy Zane
- Kathy Bates
- Frances Fisher
- Bernard Hill
- Jonathan Hyde
- Danny Nucci
- David Warner
- Bill Paxton
- Gloria Stuart
- Victor Garber
- Suzy Amis
+Leonardo DiCaprio
+Kate Winslet
+Billy Zane
+Kathy Bates
+Frances Fisher
+Bernard Hill
+Jonathan Hyde
+Danny Nucci
+David Warner
+Bill Paxton
+Gloria Stuart
+Victor Garber
+Suzy Amis
 (13 filas)
 
 -- 5. Consultar en cuántas películas del top 100 participa Harrison Ford.
 
-peliculas=# SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_HarrisonFord FROM reparto WHERE nombre_actor = 'Harrison Ford';
+peliculas=#
+SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_HarrisonFord FROM reparto WHERE nombre_actor = 'Harrison Ford';
  participacion_peliculas_harrisonford
 --------------------------------------
                                     8
@@ -172,7 +184,8 @@ peliculas=# SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_Harris
 
 -- 6. Indicar las películas estrenadas entre los años 1990 y 1999 ordenadas por título de manera ascendente.
 
-peliculas=# SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" BETWEEN 1990 AND 1999 ORDER BY pelicula ASC;
+peliculas=#
+SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" BETWEEN 1990 AND 1999 ORDER BY pelicula ASC;
 
                   pelicula                  | Año estreno
 --------------------------------------------+-------------
@@ -210,7 +223,8 @@ peliculas=# SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" 
 
 -- 7. Hacer una consulta SQL que muestre los títulos con su longitud, la longitud debe ser nombrado para la consulta como “longitud_titulo”.
 
-peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
+peliculas=#
+SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
 
                        pelicula                        | longitud_titulo
 -------------------------------------------------------+-----------------
@@ -318,7 +332,8 @@ peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
 
 -- 8. Consultar cual es la longitud más grande entre todos los títulos de las películas.
 
-peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas WHERE LENGTH(pelicula) = (SELECT MAX(LENGTH(pelicula)) FROM peliculas) LIMIT 1;
+peliculas=#
+SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas WHERE LENGTH(pelicula) = (SELECT MAX(LENGTH(pelicula)) FROM peliculas) LIMIT 1;
 
                        pelicula                        | longitud_titulo
 -------------------------------------------------------+-----------------
