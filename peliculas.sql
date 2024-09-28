@@ -1,3 +1,4 @@
+'1. Crear una base de datos que se llame peliculas'
 postgres=#
 CREATE DATABASE peliculas;
 CREATE DATABASE
@@ -8,6 +9,9 @@ peliculas=# CREATE TABLE peliculas(id INT PRIMARY KEY, pelicula VARCHAR(100) NOT
 CREATE TABLE
 peliculas= CREATE TABLE reparto(id SERIAL PRIMARY KEY, id_pelicula INT NOT NULL, nombre_actor VARCHAR(100) NOT NULL, FOREIGN KEY (id_pelicula) REFERENCES peliculas(id));
 CREATE TABLE
+
+'2. Cargar ambos archivos a su tabla correspondiente.'
+
 peliculas=# \copy peliculas(id, pelicula, "Año estreno", director) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M5\DES_ Top_100\peliculas.csv'DELIMITER ',' CSV HEADER;
 COPY 100
 peliculas=# \copy reparto(id_pelicula, nombre_actor) FROM 'C:\Users\karen\bootcamppython\BOOTCAMP\M
@@ -108,7 +112,7 @@ peliculas=# SELECT * FROM peliculas;
   91 | El libro de la selva                                  |        1967 | Wolfgang Reitherman
   92 | Los cazafantasmas                                     |        1984 | Ivan Reitman
   93 | Sweeney Todd: El barbero diab├│lico de la calle Fleet |        2007 | Tim Burton
-  94 | Oceans Eleven                                        |        2001 | Steven Spielberg
+  94 | Oceans Eleven                                         |        2001 | Steven Spielberg
   95 | Blancanieves y los siete enanitos                     |        1937 | David Hand
   96 | Predator                                              |        1987 | John McTiernan
   97 | Indiana Jones y el templo maldito                     |        1984 | Steven Spielberg
@@ -137,5 +141,185 @@ id
   2
 (1 fila)
 
+'4. Listar todos los actores que apareceb en la pelicula "Titanic".'
 
+peliculas=# SELECT nombre_actor FROM reparto WHERE id_pelicula = 2;
+   nombre_actor
+-------------------
+ Leonardo DiCaprio
+ Kate Winslet
+ Billy Zane
+ Kathy Bates
+ Frances Fisher
+ Bernard Hill
+ Jonathan Hyde
+ Danny Nucci
+ David Warner
+ Bill Paxton
+ Gloria Stuart
+ Victor Garber
+ Suzy Amis
+(13 filas)
 
+'5. Consultar en cuántas películas del top 100 participa Harrison Ford.'
+
+peliculas=# SELECT COUNT(DISTINCT id_pelicula) as participacion_peliculas_HarrisonFord FROM reparto WHERE nombre_actor = 'Harrison Ford';
+ participacion_peliculas_harrisonford
+--------------------------------------
+                                    8
+(1 fila)
+
+'6. Indicar las películas estrenadas entre los años 1990 y 1999 ordenadas por título de manera ascendente.'
+
+peliculas=# SELECT pelicula, "Año estreno" FROM peliculas WHERE "Año estreno" BETWEEN 1990 AND 1999 ORDER BY pelicula ASC;
+
+                  pelicula                  | Año estreno
+--------------------------------------------+-------------
+ American Beauty                            |        1999
+ American History X                         |        1998
+ Braveheart                                 |        1995
+ Cadena perpetua                            |        1994
+ Eduardo Manostijeras                       |        1990
+ El club de la pelea                        |        1999
+ El Padrino. Parte III                      |        1990
+ El profesional                             |        1994
+ El sexto sentido                           |        1999
+ El show de Truman                          |        1998
+ El silencio de los corderos                |        1991
+ Entrevista con el vampiro                  |        1994
+ Forest Gump                                |        1994
+ Hombres de negro                           |        1997
+ La lista de Schindler                      |        1993
+ La milla verde                             |        1999
+ Matrix                                     |        1999
+ Mejor... imposible                         |        1997
+ Parque Jur├ísico                           |        1993
+ Pesadilla antes de navidad                 |        1993
+ Pulp Fiction                               |        1994
+ Salvar al soldado Ryan                     |        1998
+ Seven                                      |        1995
+ Star Wars. Episodio I: La amenaza fantasma |        1999
+ Terminator 2: el juicio final              |        1991
+ Titanic                                    |        1997
+ Toy Story                                  |        1995
+ Toy Story 2                                |        1999
+ Trainspotting                              |        1996
+ Uno de los nuestros                        |        1990
+(30 filas)
+
+'7. Hacer una consulta SQL que muestre los títulos con su longitud, la longitud debe ser nombrado para la consulta como “longitud_titulo”.'
+
+peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas;
+
+                       pelicula                        | longitud_titulo
+-------------------------------------------------------+-----------------
+ Forest Gump                                           |              11
+ Titanic                                               |               7
+ El Padrino                                            |              10
+ Gladiator                                             |               9
+ El Se├▒or de los anillos: El retorno del rey          |              44
+ El caballero oscuro                                   |              19
+ Cadena perpetua                                       |              15
+ Piratas del Caribe: La maldici├│n de la Perla Negra   |              51
+ Braveheart                                            |              10
+ La lista de Schindler                                 |              21
+ Toy Story                                             |               9
+ Eduardo Manostijeras                                  |              20
+ El Se├▒or de los anillos: La comunidad del anillo     |              49
+ Salvar al soldado Ryan                                |              22
+ Regreso al futuro                                     |              17
+ Monstruos S.A.                                        |              14
+ Buscando a Nemo                                       |              15
+ El Se├▒or de los anillos: Las dos torres              |              40
+ Harry Potter y el Prisionero de Azkaban               |              39
+ American History X                                    |              18
+ 300                                                   |               3
+ El sexto sentido                                      |              16
+ Pulp Fiction                                          |              12
+ V de Vendetta                                         |              13
+ El silencio de los corderos                           |              27
+ Rocky                                                 |               5
+ El club de la pelea                                   |              19
+ E.T                                                   |               3
+ Parque Jur├ísico                                      |              16
+ Matrix                                                |               6
+ La milla verde                                        |              14
+ Ratatouille                                           |              11
+ Grease                                                |               6
+ El Padrino. Parte II                                  |              20
+ Wall-E                                                |               6
+ Iron Man                                              |               8
+ El exorcista                                          |              12
+ Piratas del Caribe: El cofre del hombre muerto        |              46
+ Seven                                                 |               5
+ Terminator 2: el juicio final                         |              29
+ El resplandor                                         |              13
+ Hombres de negro                                      |              16
+ Spider-Man                                            |              10
+ Regreso al futuro II                                  |              20
+ El show de Truman                                     |              17
+ Toy Story 2                                           |              11
+ Pesadilla antes de navidad                            |              26
+ Star Wars. Episodio IV: Una nueva esperanza           |              43
+ Saw                                                   |               3
+ Terminator                                            |              10
+ Kill Bill Vol. 1                                      |              16
+ Lo que el viento se llev├│                            |              26
+ El Laberinto del Fauno                                |              22
+ Los incre├¡bles                                       |              15
+ El viaje de Chihiro                                   |              19
+ El precio del poder                                   |              19
+ King Kong                                             |               9
+ Ben-Hur                                               |               7
+ Indiana Jones y la ├║ltima cruzada                    |              34
+ Infiltrados                                           |              11
+ Entrevista con el vampiro                             |              25
+ Batman Begins                                         |              13
+ En busca del arca perdida                             |              25
+ Star Wars. Episodio III: La venganza de los Sith      |              48
+ Alien                                                 |               5
+ El bueno el feo y el malo                             |              25
+ Star Wars. Episodio V: El imperio contraataca         |              45
+ El Padrino. Parte III                                 |              21
+ Star Wars. Episodio VI: El retorno del Jedi           |              43
+ Escuela de Rock                                       |              15
+ El planeta de los simios                              |              24
+ Rambo                                                 |               5
+ Full Metal Jacket                                     |              17
+ Tibur├│n                                              |               8
+ El profesional                                        |              14
+ American Beauty                                       |              15
+ Casablanca                                            |              10
+ Am├®lie                                               |               7
+ Trainspotting                                         |              13
+ axi driver                                            |              10
+ Alguien vol├│ sobre el nido del cuco                  |              36
+ Kill Bill Vol. 2                                      |              16
+ Spider-Man 2                                          |              12
+ X-Men 2                                               |               7
+ Transformers                                          |              12
+ Star Wars. Episodio I: La amenaza fantasma            |              42
+ Blade Runner                                          |              12
+ Apocalypse Now                                        |              14
+ Mejor... imposible                                    |              18
+ La vida de Brian                                      |              16
+ El libro de la selva                                  |              20
+ Los cazafantasmas                                     |              17
+ Sweeney Todd: El barbero diab├│lico de la calle Fleet |              53
+ Oceans Eleven                                         |              14
+ Blancanieves y los siete enanitos                     |              33
+ Predator                                              |               8
+ Indiana Jones y el templo maldito                     |              33
+ Uno de los nuestros                                   |              19
+ Mouling Rouge                                         |              13
+ Psicosis                                              |               8
+(100 filas)
+
+'8. Consultar cual es la longitud más grande entre todos los títulos de las películas.'
+
+peliculas=# SELECT pelicula, LENGTH(pelicula) AS longitud_titulo FROM peliculas WHERE LENGTH(pelicula) = (SELECT MAX(LENGTH(pelicula)) FROM peliculas) LIMIT 1;
+
+                       pelicula                        | longitud_titulo
+-------------------------------------------------------+-----------------
+ Sweeney Todd: El barbero diab├│lico de la calle Fleet |              53
+(1 fila)
